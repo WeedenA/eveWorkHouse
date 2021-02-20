@@ -1,0 +1,6 @@
+- Add optimal allocation of characters/ore
+        --> automate setting up initial ores
+- Automate dictionary listings so names are generated
+- multi-graphs for cycle/time info
+- pull market api to assess price
+- start using numpy, might be better than naming things out like in terminal analysis
