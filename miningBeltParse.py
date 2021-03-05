@@ -54,8 +54,9 @@ for line in lines:
         ores[9] = ores[9] + intVol
 
 print(f"{ores}\n")  # final values before div
-ores[9] = ores[9] / 10  # doesn't skew graph as much (TOTAL)
-maxOreVolume = (20000 - (max(ores) % 20000)) + max(ores)  # rounded max ore to size graph
+maxOreVolume = (20000 - (max(ores[:9]) % 20000)) + max(ores[:9])  # rounded max ore to size graph
+total = ores[9]
+ores[9] = 0
 
 # New plotting
 fig, ax = plt.subplots()
@@ -71,7 +72,7 @@ plt.grid(axis='x')
 # add values in-graph
 for i, v in enumerate(ores):
     if i == 9:  # puts actual total as text for divided total bar
-        ax.text(v, i, str(int(v) * 10), fontweight='bold')
+        ax.text(v, i, str(total), fontweight='bold')
     else:
         ax.text(v, i, str(int(v)), fontweight='bold')
 plt.show()
