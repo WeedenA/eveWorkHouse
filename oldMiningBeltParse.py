@@ -42,7 +42,10 @@ for line in lines:
     ores[9] = ores[9] + intVol
 
 
-maxOreVolume = (20000 - (max(ores[:9]) % 20000)) + max(ores[:9])  # rounded max ore to size graph
+maxOreVolume = (200000 - (max(ores[:9]) % 200000)) + max(ores[:9])  # rounded max ore to size graph
+print(f"remainder: {(max(ores[:9]) % 20000)}")
+print(f"max ore: {maxOreVolume}")
+
 total = ores[9]
 ores[9] = 0
 

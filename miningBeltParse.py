@@ -4,12 +4,16 @@ Action: Creates dictionary based on ore names
 
 Output: Dict or dataframe?? of ore: m3
 
+todo: separate density/volume for easier calc?
+todo: group density ores on graph by common base ore
 
 @author: Alex Weeden
 '''
 
 import numpy as np
 import matplotlib.pyplot as plt; plt.rcdefaults()
+from oreDictionary import oreDictionary as oreDict
+
 # Pull in text file
 file = open('miningParse.txt')
 lines = file.readlines()
@@ -17,39 +21,52 @@ file.close()
 # Assign Ore names
 # todo: parse column to add names as found (sort by variant percentage?) dicts-Veldspar:0 Dense:1 etc
 # todo: multiple graphs to show densities etc side by side
-my_dict = {}
 # list of ores, total = index9
-oreList = ['Veldspar', 'Concentrated Veldspar', 'Dense Veldspar', 'Scordite',
-           'Condensed Scordite', 'Massive Scordite', 'Pyroxeres', 'Solid Pyroxeres',
-           'Viscous Pyroxeres', 'TotalDIV10']
-ores = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-oreCount = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+# oreList = ['Veldspar', 'Concentrated Veldspar', 'Dense Veldspar', 'Scordite',
+#            'Condensed Scordite', 'Massive Scordite', 'Pyroxeres', 'Solid Pyroxeres',
+#            'Viscous Pyroxeres', 'TotalDIV10']
+# ores = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+# oreCount = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+dynamicOreNames = oreDict()
+dynamicOreNames['Total'] = 0
 # splits lines, cleans extraneous text, pseudo-switch
 for line in lines:
     line = line.split('\t')
     line = [i.strip() for i in line]
+
+    # check if rocks went empty, handle it
+    # todo: "clean" method to handle this random shit (and add functionality)
     if (len(line) == 1):
         for x in range(2): line.append('0 m3')
-    line[2] = line[2][:-3]
-    line[2] = line[2].replace(',', '')
-    intVol = int(line[2])
-    for x in range(len(oreList)):
-        if line[0] == oreList[x]:
-            choice = x
-    ores[choice] = ores[choice] + intVol
-    oreCount[choice] += 1
-    ores[9] = ores[9] + intVol
+    # remove "m3" from volume
+    name = line[0]
+    volume = line[2][:-3]
+    # remove comma from m3 to handle as int
+    volume = volume.replace(',', '')
+    volume = int(volume)
+    if name not in dynamicOreNames:
+        dynamicOreNames.addKey(name, volume)
+    else:
+        dynamicOreNames.incrementKey(name, volume)
+print(dynamicOreNames)
+total= dynamicOreNames.total()
+roundedMax = dynamicOreNames.roundedMaxExcludeTotal()
+oreNameList = list(dynamicOreNames.keys())
+oreVolumeList = dynamicOreNames.volumeList()
+print(oreVolumeList)
+oreVolumeList[0] = 0
+print(oreVolumeList)
+print(total)
 
 
-maxOreVolume = (20000 - (max(ores[:9]) % 20000)) + max(ores[:9])  # rounded max ore to size graph
-total = ores[9]
-ores[9] = 0
+
 
 # New plotting
 fig, ax = plt.subplots()
-ax.barh(oreList, ores)
-plt.xticks(np.arange(0,maxOreVolume, 10000))
+ax.barh(oreNameList, oreVolumeList)
+plt.xticks(np.arange(0,roundedMax,roundedMax/10))
 labels = ax.get_xticklabels()
 plt.setp(labels, rotation=45, horizontalalignment='right')
 plt.xlabel('m3')
@@ -58,13 +75,14 @@ plt.title('Belt Ore Distribution')
 plt.grid(axis='x')
 
 # add values in-graph
-for i, v in enumerate(ores):
-    if i == 9:  # puts actual total as text for divided total bar
+for i, v in enumerate(oreVolumeList):
+    if i == 0:  # puts actual total as text for divided total bar
         ax.text(v, i, str(total), fontweight='bold')
     else:
         ax.text(v, i, str(int(v)), fontweight='bold')
 plt.show()
 
+####### STOPPED HERE
 # Terminal summations/analysis
 #
 # total v/s/p
