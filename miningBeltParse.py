@@ -1,3 +1,13 @@
+'''
+Input: Reads in survey scanner output from miningParse.txt
+Action: Creates dictionary based on ore names
+
+Output: Dict or dataframe?? of ore: m3
+
+
+@author: Alex Weeden
+'''
+
 import numpy as np
 import matplotlib.pyplot as plt; plt.rcdefaults()
 # Pull in text file
