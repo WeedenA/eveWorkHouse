@@ -10,10 +10,13 @@ class oreDictionary(dict):
         self = dict()
 
     # todo: combine these two
-    def addKey(self, key, value=0):
+    def addKey(self, key, value=0, isOutRange=False):
         self.setdefault(key, [])
         self[key].append(value)
-        self[key].append(1)
+        if isOutRange:
+            self[key].append(0)
+        else:
+            self[key].append(1)
         self['Total'] += value
 
     def incrementKey(self, key, value):
@@ -32,7 +35,6 @@ class oreDictionary(dict):
                 pass
             else:
                 tempList.append(self[key][0])
-        print(tempList)
         roundedMax = (200000 - (max(tempList) % 200000)) + max(tempList)
         return roundedMax
 

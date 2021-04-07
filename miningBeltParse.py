@@ -6,6 +6,9 @@ Output: Dict or dataframe?? of ore: m3
 
 todo: separate density/volume for easier calc?
 todo: group density ores on graph by common base ore
+todo: multiple graphs
+todo: distance from rock
+todo: pricing
 
 @author: Alex Weeden
 '''
@@ -13,52 +16,66 @@ todo: group density ores on graph by common base ore
 import numpy as np
 import matplotlib.pyplot as plt; plt.rcdefaults()
 from oreDictionary import oreDictionary as oreDict
+MAX_SCANNER_RANGE = 121
+MAX_MINING_RANGE = 24
+def cleanLines(line):
+    line = line.split('\t')
+    # check if rocks went empty, handle it
+    if (len(line) == 1):
+        for x in range(2): line.append('0 m3')
+        line.append('50 km')
+    # remove "m3" from volume, ore header newlines
+    name = line[0]
+    name = name.strip('\n')
+    volume = line[2][:-3]
+    # remove comma from m3 to handle as int
+    volume = volume.replace(',', '')
+    volume = int(volume)
+    distance = line[3][:-3].strip()
+    distance = distance.replace(',', '')
+    distance = int(distance)
+    if distance > MAX_SCANNER_RANGE:
+        distance = 10
+    return name, volume, distance
 
 # Pull in text file
 file = open('miningParse.txt')
 lines = file.readlines()
 file.close()
-# Assign Ore names
-# todo: parse column to add names as found (sort by variant percentage?) dicts-Veldspar:0 Dense:1 etc
-# todo: multiple graphs to show densities etc side by side
-# list of ores, total = index9
 
-# oreList = ['Veldspar', 'Concentrated Veldspar', 'Dense Veldspar', 'Scordite',
-#            'Condensed Scordite', 'Massive Scordite', 'Pyroxeres', 'Solid Pyroxeres',
-#            'Viscous Pyroxeres', 'TotalDIV10']
-# ores = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-# oreCount = [0, 0, 0, 0, 0, 0, 0, 0, 0]
-
+# sets initial dict
 dynamicOreNames = oreDict()
+inRangeOre = oreDict()
+inRangeOre['Total'] = 0
 dynamicOreNames['Total'] = 0
-# splits lines, cleans extraneous text, pseudo-switch
+# splits lines, cleans extraneous text, adds ore to dict or increments volume
 for line in lines:
-    line = line.split('\t')
-    line = [i.strip() for i in line]
-
-    # check if rocks went empty, handle it
-    # todo: "clean" method to handle this random shit (and add functionality)
-    if (len(line) == 1):
-        for x in range(2): line.append('0 m3')
-    # remove "m3" from volume
-    name = line[0]
-    volume = line[2][:-3]
-    # remove comma from m3 to handle as int
-    volume = volume.replace(',', '')
-    volume = int(volume)
+    name, volume, distance = cleanLines(line)
     if name not in dynamicOreNames:
         dynamicOreNames.addKey(name, volume)
+
+        if distance < MAX_MINING_RANGE:
+            inRangeOre.addKey(name, volume)
+        else:
+            inRangeOre.addKey(name, 0, isOutRange=True)
     else:
         dynamicOreNames.incrementKey(name, volume)
-print(dynamicOreNames)
+        if distance < MAX_MINING_RANGE:
+            inRangeOre.incrementKey(name, volume)
+
+# Terminal Outputs, graphing calcs
+# todo: make a class for these sets?
+print(f'Final Dict: {dynamicOreNames}')
+print(f'In Range Ores: {inRangeOre}')
 total= dynamicOreNames.total()
 roundedMax = dynamicOreNames.roundedMaxExcludeTotal()
+print(f'Max Volume Rounded: {roundedMax}')
 oreNameList = list(dynamicOreNames.keys())
 oreVolumeList = dynamicOreNames.volumeList()
-print(oreVolumeList)
+print(f'Ore volumes: {oreVolumeList}')
+# set total to 0 for graphing
 oreVolumeList[0] = 0
-print(oreVolumeList)
-print(total)
+print(f'Total m3: {total}')
 
 
 
@@ -66,7 +83,7 @@ print(total)
 # New plotting
 fig, ax = plt.subplots()
 ax.barh(oreNameList, oreVolumeList)
-plt.xticks(np.arange(0,roundedMax,roundedMax/10))
+#plt.xticks(np.arange(0,roundedMax,roundedMax/10))
 labels = ax.get_xticklabels()
 plt.setp(labels, rotation=45, horizontalalignment='right')
 plt.xlabel('m3')
@@ -82,46 +99,11 @@ for i, v in enumerate(oreVolumeList):
         ax.text(v, i, str(int(v)), fontweight='bold')
 plt.show()
 
-####### STOPPED HERE
+####### STOPPED REVIEW HERE
 # Terminal summations/analysis
 #
 # total v/s/p
-veld, scor, pyro = 0,0,0
-veldCount, scorCount, pyroCount = 0,0,0
-for x in range(3):
-    veld += ores[x]
-    veldCount += oreCount[x]
-for x in range(3,6):
-    scor += ores[x]
-    scorCount += oreCount[x]
-for x in range(6,9):
-    pyro += ores[x]
-    pyroCount += oreCount[x]
-comboOre = [veld, scor, pyro]
-comboCount = [veldCount, scorCount, pyroCount]
-comboOre = [int(x) for x in comboOre]
-oreDensity = np.divide(comboOre, comboCount)
-# begin terminal analysis
-cycleOre = np.divide(comboOre, 2714)
-cycleOre = cycleOre.astype(np.uint)
-timeOre = np.divide(comboOre, 2100).astype(np.uint)
-baseOreList = ['Veldspar','Scordite','Pyroxeres']
-allocOre = [0,0,0]
-cycleOreMod = cycleOre.copy()
-cyclePC = sum(cycleOre) / 6
-for x in range(3):
-    while (cycleOreMod[x] > cyclePC):
-        allocOre[x] += 1
-        cycleOreMod[x] = cycleOreMod[x] - cyclePC
-iOfMax = np.argmax(cycleOreMod)
-allocOre[iOfMax] += 1
-df = np.array([baseOreList, comboOre, cycleOre, timeOre, allocOre])
-for x in range(df.shape[1]):
-    print(f"{df[0,x]}: {df[1,x]}m3, {df[2,x]} cycles, "
-          f"{df[3,x]}min, allocate {df[4,x]}")
 
-print(oreCount)
-print(oreDensity)
 
 
 
