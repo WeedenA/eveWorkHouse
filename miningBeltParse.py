@@ -39,7 +39,7 @@ def cleanLines(line):
     return name, volume, distance
 
 # Pull in text file
-file = open('miningParse.txt')
+file = open('miningParse2.txt')
 lines = file.readlines()
 file.close()
 

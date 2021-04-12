@@ -1,55 +1,48 @@
-Glistening Sylvite	11,464	114,640 m3	175 m
-Glistening Sylvite	11,464	114,640 m3	3,633 m
-Glistening Sylvite	22,928	229,280 m3	3,784 m
-Glistening Sylvite	34,392	343,920 m3	12 km
-Glistening Sylvite	11,464	114,640 m3	21 km
-Glistening Sylvite	10,764	107,640 m3	26 km
-Glistening Sylvite	11,464	114,640 m3	27 km
-Glistening Sylvite	11,464	114,640 m3	27 km
-Glistening Sylvite	11,464	114,640 m3	33 km
-Glistening Sylvite	22,928	229,280 m3	34 km
-Glistening Sylvite	34,392	343,920 m3	38 km
-Glistening Sylvite	11,464	114,640 m3	40 km
-Glistening Sylvite	11,464	114,640 m3	43 km
-Glistening Sylvite	11,464	114,640 m3	48 km
-Glistening Sylvite	22,928	229,280 m3	49 km
-Glistening Sylvite	34,152	341,520 m3	52 km
-Glistening Sylvite	11,464	114,640 m3	60 km
-Glistening Sylvite	11,464	114,640 m3	65 km
-Glistening Sylvite	33,061	330,610 m3	67 km
-Glistening Sylvite	11,464	114,640 m3	67 km
-Glistening Sylvite	11,464	114,640 m3	68 km
-Glistening Sylvite	11,464	114,640 m3	76 km
-Glistening Sylvite	34,392	343,920 m3	77 km
-Glistening Sylvite	11,464	114,640 m3	87 km
-Glistening Sylvite	11,344	113,440 m3	91 km
-Glistening Sylvite	16,585	165,850 m3	96 km
-Glistening Sylvite	22,928	229,280 m3	101 km
-Glistening Sylvite	22,928	229,280 m3	106 km
-Glistening Sylvite	11,464	114,640 m3	110 km
-Shimmering Vanadinite
-Shimmering Vanadinite	11,464	114,640 m3	9,242 m
-Shimmering Vanadinite	10,696	106,960 m3	22 km
-Shimmering Vanadinite	10,859	108,590 m3	28 km
-Shimmering Vanadinite	8,590	85,900 m3	29 km
-Shimmering Vanadinite	11,464	114,640 m3	36 km
-Shimmering Vanadinite	11,354	113,540 m3	41 km
-Shimmering Vanadinite	4,743	47,430 m3	50 km
-Shimmering Vanadinite	4,608	46,080 m3	51 km
-Shimmering Vanadinite	18,101	181,010 m3	55 km
-Shimmering Vanadinite	12,163	121,630 m3	58 km
-Shimmering Vanadinite	10,677	106,770 m3	58 km
-Shimmering Vanadinite	3,952	39,520 m3	60 km
-Shimmering Vanadinite	15,438	154,380 m3	62 km
-Shimmering Vanadinite	10,759	107,590 m3	67 km
-Shimmering Vanadinite	6,065	60,650 m3	70 km
-Shimmering Vanadinite	5,231	52,310 m3	71 km
-Shimmering Vanadinite	22,670	226,700 m3	77 km
-Shimmering Vanadinite	10,915	109,150 m3	82 km
-Shimmering Vanadinite	9,696	96,960 m3	84 km
-Shimmering Vanadinite	10,316	103,160 m3	88 km
-Shimmering Vanadinite	22,928	229,280 m3	94 km
-Shimmering Vanadinite	11,464	114,640 m3	104 km
-Shimmering Vanadinite	11,464	114,640 m3	105 km
-Shimmering Vanadinite	10,272	102,720 m3	105 km
-Shimmering Vanadinite	10,093	100,930 m3	116 km
+Lavish Sperrylite	11,125	111,250 m3	369 m
+Lavish Sperrylite	10,781	107,810 m3	27 km
+Lavish Sperrylite	963	9,630 m3	50 km
+Lavish Sperrylite	7,241	72,410 m3	68 km
+Lavish Sperrylite	8,521	85,210 m3	117 km
+Replete Zircon	5,971	59,710 m3	51 km
+Replete Zircon	17,911	179,110 m3	89 km
+Replete Zircon	5,971	59,710 m3	100 km
+Replete Zircon	5,971	59,710 m3	122 km
+Sperrylite	17,911	179,110 m3	7,593 m
+Sperrylite	17,911	179,110 m3	15 km
+Sperrylite	5,971	59,710 m3	32 km
+Sperrylite	17,911	179,110 m3	37 km
+Sperrylite	5,971	59,710 m3	52 km
+Sperrylite	5,971	59,710 m3	54 km
+Sperrylite	5,971	59,710 m3	57 km
+Sperrylite	17,911	179,110 m3	64 km
+Sperrylite	11,941	119,410 m3	66 km
+Sperrylite	17,911	179,110 m3	68 km
+Sperrylite	17,911	179,110 m3	73 km
+Sperrylite	17,911	179,110 m3	73 km
+Sperrylite	17,911	179,110 m3	85 km
+Sperrylite	5,971	59,710 m3	86 km
+Sperrylite	17,911	179,110 m3	86 km
+Sperrylite	5,971	59,710 m3	93 km
+Sperrylite	5,971	59,710 m3	95 km
+Sperrylite	5,971	59,710 m3	105 km
+Sperrylite	5,971	59,710 m3	110 km
+Sperrylite	11,941	119,410 m3	111 km
+Sperrylite	5,971	59,710 m3	113 km
+Sperrylite	17,911	179,110 m3	140 km
+Zircon	5,971	59,710 m3	10 km
+Zircon	11,941	119,410 m3	39 km
+Zircon	5,971	59,710 m3	42 km
+Zircon	5,971	59,710 m3	44 km
+Zircon	5,971	59,710 m3	51 km
+Zircon	4,577	45,770 m3	65 km
+Zircon	5,971	59,710 m3	69 km
+Zircon	11,941	119,410 m3	70 km
+Zircon	17,911	179,110 m3	70 km
+Zircon	5,971	59,710 m3	94 km
+Zircon	11,941	119,410 m3	97 km
+Zircon	17,911	179,110 m3	98 km
+Zircon	5,971	59,710 m3	99 km
+Zircon	5,971	59,710 m3	107 km
+Zircon	15,161	151,610 m3	108 km
+Zircon	17,911	179,110 m3	123 km
+Zircon	5,971	59,710 m3	127 km
