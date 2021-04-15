@@ -36,6 +36,10 @@ todaysDict.graph()
 if log[-1]['date'] == todaysDict['date']:
     print("already ran it today dumbass")
     print(f"here's your dict: {todaysDict}")
+    log.append(todaysDict)
+    with open('PRICE_LOG.txt', 'wb') as f:
+        pickle.dump(log, f)
+    f.close()
 else:
     log.append(todaysDict)
     with open('PRICE_LOG.txt', 'wb') as f:

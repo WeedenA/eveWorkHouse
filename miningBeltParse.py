@@ -99,10 +99,6 @@ for i, v in enumerate(oreVolumeList):
         ax.text(v, i, str(int(v)), fontweight='bold')
 plt.show()
 
-####### STOPPED REVIEW HERE
-# Terminal summations/analysis
-#
-# total v/s/p
 
 
 
