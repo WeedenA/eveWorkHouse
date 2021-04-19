@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from gooPriceHistory import gooPriceHistory as priceDict
 from operator import itemgetter
+from random import randint
 # todo: before using in any other files, indent into a function
 # todo: Also remember all these prices are straight from EvE values (API pls)
 # todo: List biggest deltas (daily, overall)
@@ -25,6 +26,7 @@ def appendDates(log):
 
 # parse through adding lines to subplots, prints historic and most recent price tiering
 def parseGraph(oreNames, log):
+    #plt.style.use('fivethirtyeight')
     dailyTally = []
     graphSplitter = 0
     subGraphCol = 0
@@ -37,7 +39,11 @@ def parseGraph(oreNames, log):
             orePrices.append(entry[ore])
         ax[subGraphCol].plot(xDateRange, orePrices)
         ax[subGraphCol].set_yticks(np.arange(2000, 15000, 1000))
-        ax[subGraphCol].text(xDateRange[-2], orePrices[-1], ore, rotation=0, va='bottom')
+        if subGraphCol == 1:
+            rand = randint(1,3)
+            ax[subGraphCol].text(xDateRange[-rand], orePrices[-1], ore, rotation=0, va='bottom')
+        else:
+            ax[subGraphCol].text(xDateRange[-2], orePrices[-1], ore, rotation=0, va='bottom')
         print(f'Ore: {ore}\tPriceHist: {orePrices}')
         dailyTally.append([ore, orePrices[-1]])
         dailyTally.append(['T2 ' + ore, orePrices[-1] * 1.15])
