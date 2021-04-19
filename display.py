@@ -16,7 +16,6 @@ from random import randint
 #       in order to make adding features easier
 # todo: interactive "choose what ores" vs auto sense from mining parse (tie into parse, sep out, have true main)
 
-
 # parse date ranges for x values
 def appendDates(log):
     result = []
@@ -25,25 +24,27 @@ def appendDates(log):
     return result
 
 # parse through adding lines to subplots, prints historic and most recent price tiering
+
 def parseGraph(oreNames, log):
     #plt.style.use('fivethirtyeight')
     dailyTally = []
     graphSplitter = 0
     subGraphCol = 0
-    fig, ax = plt.subplots(1, 2)
+    subGraphRow = 0
     for ore in oreNames:
+        axChanging = ax[subGraphCol]
         orePrices = []
         if graphSplitter == 8:
             subGraphCol = 1
         for entry in log:
             orePrices.append(entry[ore])
-        ax[subGraphCol].plot(xDateRange, orePrices)
-        ax[subGraphCol].set_yticks(np.arange(2000, 15000, 1000))
+        axChanging.plot(xDateRange, orePrices)
+        axChanging.set_yticks(np.arange(2000, 15000, 1000))
         if subGraphCol == 1:
             rand = randint(1,3)
-            ax[subGraphCol].text(xDateRange[-rand], orePrices[-1], ore, rotation=0, va='bottom')
+            axChanging.text(xDateRange[-rand], orePrices[-1], ore, rotation=0, va='bottom')
         else:
-            ax[subGraphCol].text(xDateRange[-2], orePrices[-1], ore, rotation=0, va='bottom')
+            axChanging.text(xDateRange[-2], orePrices[-1], ore, rotation=0, va='bottom')
         print(f'Ore: {ore}\tPriceHist: {orePrices}')
         dailyTally.append([ore, orePrices[-1]])
         dailyTally.append(['T2 ' + ore, orePrices[-1] * 1.15])
@@ -84,7 +85,9 @@ if __name__ == "__main__":
     oreNames = playDict.oreNameList()
     log = playDict.openLog()
     xDateRange = appendDates(log)
+    fig, ax = plt.subplots(1, 2)
     fig, ax = parseGraph(oreNames, log)
+    #ax[2].plot(np.arange(0,10,1), np.arange(5,15,1))
     display(fig, ax)
 
 
