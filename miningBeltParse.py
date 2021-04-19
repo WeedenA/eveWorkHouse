@@ -4,11 +4,9 @@ Action: Creates dictionary based on ore names
 
 Output: Dict or dataframe?? of ore: m3
 
-todo: separate density/volume for easier calc?
-todo: group density ores on graph by common base ore
-todo: multiple graphs
-todo: distance from rock
-todo: pricing
+todo: distance from rock - immediately parseable
+todo: pricing - ready for you in gooPrice openLog
+todo: stop with todos until these are done :)
 
 @author: Alex Weeden
 '''

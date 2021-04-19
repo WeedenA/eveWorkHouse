@@ -1,6 +1,7 @@
 from gooPriceHistory import gooPriceHistory as priceDict
 import pickle
 
+PRICE_LOG = 'PRICE_LOG.txt'
 #Load pickled list of historical data dictionaries
 
 
@@ -37,12 +38,12 @@ if log[-1]['date'] == todaysDict['date']:
     print("already ran it today dumbass")
     print(f"here's your dict: {todaysDict}")
     log.append(todaysDict)
-    with open('PRICE_LOG.txt', 'wb') as f:
+    with open(PRICE_LOG, 'wb') as f:
         pickle.dump(log, f)
     f.close()
 else:
     log.append(todaysDict)
-    with open('PRICE_LOG.txt', 'wb') as f:
+    with open(PRICE_LOG, 'wb') as f:
         pickle.dump(log, f)
     f.close()
 

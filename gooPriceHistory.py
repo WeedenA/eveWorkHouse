@@ -6,6 +6,7 @@ import pickle
 ORE_NAMES = ['Loparite', 'Monazite', 'Xenotime', 'Ytterbite',
              'Carnotite', 'Cinnabar', 'Pollucite', 'Zircon',
              'Chromite', 'Otavite', 'Sperrylite', 'Vanadinite']
+PRICE_LOG = 'PRICE_LOG.txt'
 
 class gooPriceHistory(dict):
 
@@ -29,7 +30,7 @@ class gooPriceHistory(dict):
         plt.show()
 
     def openLog(self):
-        with open('PRICE_LOG.txt', 'rb') as f:
+        with open(PRICE_LOG, 'rb') as f:
             log = pickle.load(f)
         f.close()
         return(log)

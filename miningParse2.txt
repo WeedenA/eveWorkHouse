@@ -1,60 +1,11 @@
-Chromite	12,290	122,900 m3	14 km
-Chromite	24,579	245,790 m3	18 km
-Chromite	24,579	245,790 m3	19 km
-Chromite	12,290	122,900 m3	25 km
-Chromite	12,290	122,900 m3	30 km
-Chromite	36,868	368,680 m3	35 km
-Chromite	24,579	245,790 m3	36 km
-Chromite	27,516	275,160 m3	44 km
-Chromite	12,290	122,900 m3	45 km
-Chromite	12,290	122,900 m3	53 km
-Chromite	24,579	245,790 m3	57 km
-Chromite	12,290	122,900 m3	62 km
-Chromite	12,290	122,900 m3	63 km
-Chromite	24,579	245,790 m3	63 km
-Chromite	36,868	368,680 m3	66 km
-Chromite	24,579	245,790 m3	66 km
-Chromite	24,579	245,790 m3	66 km
-Chromite	36,868	368,680 m3	67 km
-Chromite	12,290	122,900 m3	71 km
-Chromite	12,290	122,900 m3	76 km
-Chromite	12,290	122,900 m3	80 km
-Chromite	24,579	245,790 m3	82 km
-Chromite	36,868	368,680 m3	87 km
-Chromite	12,290	122,900 m3	89 km
-Chromite	12,290	122,900 m3	91 km
-Chromite	12,290	122,900 m3	94 km
-Chromite	12,290	122,900 m3	98 km
-Chromite	36,868	368,680 m3	99 km
-Chromite	12,290	122,900 m3	101 km
-Chromite	12,290	122,900 m3	108 km
-Lavish Chromite	9,175	91,750 m3	1,375 m
-Lavish Chromite	36,868	368,680 m3	48 km
-Lavish Chromite	36,868	368,680 m3	63 km
-Lavish Chromite	12,290	122,900 m3	65 km
-Lavish Chromite	12,290	122,900 m3	67 km
-Lavish Chromite	25,547	255,470 m3	100 km
-Lavish Sperrylite	3,342	33,420 m3	67 km
-Lavish Sperrylite	10,739	107,390 m3	82 km
-Sperrylite	26,309	263,090 m3	24 km
-Sperrylite	8,930	89,300 m3	25 km
-Sperrylite	24,579	245,790 m3	40 km
-Sperrylite	12,290	122,900 m3	46 km
-Sperrylite	24,579	245,790 m3	46 km
-Sperrylite	12,290	122,900 m3	48 km
-Sperrylite	12,290	122,900 m3	52 km
-Sperrylite	12,290	122,900 m3	53 km
-Sperrylite	12,290	122,900 m3	54 km
-Sperrylite	12,290	122,900 m3	54 km
-Sperrylite	28,531	285,310 m3	63 km
-Sperrylite	12,290	122,900 m3	64 km
-Sperrylite	12,290	122,900 m3	66 km
-Sperrylite	12,290	122,900 m3	79 km
-Sperrylite	7,204	72,040 m3	81 km
-Sperrylite	36,868	368,680 m3	83 km
-Sperrylite	12,290	122,900 m3	87 km
-Sperrylite	36,868	368,680 m3	89 km
-Sperrylite	8,182	81,820 m3	89 km
-Sperrylite	24,579	245,790 m3	94 km
-Sperrylite	12,290	122,900 m3	101 km
-Sperrylite	12,290	122,900 m3	109 km
+Sperrylite	9,041	90,410 m3	733 m
+Sperrylite	3,573	35,730 m3	15 km
+Sperrylite	6,892	68,920 m3	34 km
+Sperrylite	14,544	145,440 m3	42 km
+Sperrylite	31,281	312,810 m3	57 km
+Sperrylite	3,148	31,480 m3	67 km
+Sperrylite	20,449	204,490 m3	80 km
+Sperrylite	10,138	101,380 m3	84 km
+Sperrylite	5,776	57,760 m3	94 km
+Sperrylite	7,787	77,870 m3	98 km
+Sperrylite	12,249	122,490 m3	147 km
