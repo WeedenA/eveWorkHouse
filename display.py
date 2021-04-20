@@ -3,61 +3,44 @@ import numpy as np
 from gooPriceHistory import gooPriceHistory as priceDict
 from operator import itemgetter
 from random import randint
-# todo: before using in any other files, indent into a function
-# todo: Also remember all these prices are straight from EvE values (API pls)
-# todo: List biggest deltas (daily, overall)
-# todo: main to run parse, price, etc all at once
-# todo: add time to granularize multi-day updates
-# todo: separate tiers of ore for better visualization(multi-axis or multi-plot? sentdex)
-# todo: delta vs yesterday, vs avg
-# todo: fix xticks date (time?)
+from openOsFile import openApp
+from PriceData import PriceData
 # todo: add into mining parse to only show what's present
-# todo: add class to separate key stats likely to be used in the future: ie lastPriceList, overallDeltaList, etc
-#       in order to make adding features easier
 # todo: interactive "choose what ores" vs auto sense from mining parse (tie into parse, sep out, have true main)
-fig, ax = plt.subplots(1, 2)
+# todo: enumerate into barchart deltas, or tiered pricing (like from mining parse names)
 
-# parse date ranges for x values
-def appendDates(log):
-    result = []
-    for entry in log:
-        result.append(entry['date'][5:])
-    return result
 
-# parse through adding lines to subplots, prints historic and most recent price tiering
+def printStats():
+    i = 0
+    for ore in Handler.oreNames:
+        print(f'Ore: {ore}\tPriceHist: {Handler.prices[i]}')
+        print(f'Daily Delta: \t{Handler.intraDelta[i]}')
+        print(f'Over Delta: \t{Handler.interDelta[i]}')
 
-def parseGraph(oreNames, log):
-    #plt.style.use('fivethirtyeight')
-    dailyTally = []
+        i += 1
+
+
+def parseGraph():
     graphSplitter = 0
     subGraphCol = 0
     subGraphRow = 0
-    for ore in oreNames:
-        orePrices = []
+    i = 0
+    for ore in Handler.oreNames:
         if graphSplitter == 8:
             subGraphCol = 1
-        for entry in log:
-            orePrices.append(entry[ore])
-        ax[subGraphCol].plot(xDateRange, orePrices)
+        ax[subGraphCol].plot(Handler.dates, Handler.prices[i])
         ax[subGraphCol].set_yticks(np.arange(2000, 15000, 1000))
         if subGraphCol == 1:
             rand = randint(1,3)
-            ax[subGraphCol].text(xDateRange[-rand], orePrices[-1], ore, rotation=0, va='bottom')
+            ax[subGraphCol].text(Handler.dates[-rand], Handler.prices[i][-1], ore, rotation=0, va='bottom')
         else:
-            ax[subGraphCol].text(xDateRange[-2], orePrices[-1], ore, rotation=0, va='bottom')
-        print(f'Ore: {ore}\tPriceHist: {orePrices}')
-        dailyTally.append([ore, orePrices[-1]])
-        dailyTally.append(['T2 ' + ore, orePrices[-1] * 1.15])
-        dailyTally.append(['T3 ' + ore, orePrices[-1] * 2])
+            ax[subGraphCol].text(Handler.dates[-2], Handler.prices[i][-1], ore, rotation=0, va='bottom')
         graphSplitter += 1
-    print("\n\n")
-    dailyTally = sorted(dailyTally, key=itemgetter(1), reverse=True)
-    for item in dailyTally:
-        print(item)
+        i += 1
     return fig, ax
 
-# graph maintenance
-def display(fig, ax):
+
+def plotHistLines():
     title = 'B-Team Buyback Price Log'
     fig.suptitle(title)
     ax1 = ax[0]
@@ -69,26 +52,38 @@ def display(fig, ax):
     ax1.set_title("R64/32")
     ax2.set_title("R16")
 
-    ax1.legend(oreNames[:8], loc='lower left')
-    ax2.legend(oreNames[8:12], loc='lower left')
+    ax1.legend(Handler.oreNames[:8], loc='lower left')
+    ax2.legend(Handler.oreNames[8:12], loc='lower left')
 
-    fig.set_figwidth(12)
+
+def plotTiersBar():
+    bars = np.add(Handler.lastPrice,Handler.lastPriceT2).tolist()
+    for i in range(3):
+        ax[2].barh(Handler.oreNames, Handler.lastPrice, label='Base')
+        ax[2].barh(Handler.oreNames, Handler.lastPriceT2, left=Handler.lastPrice, label='T2')
+        ax[2].barh(Handler.oreNames, Handler.lastPriceT3, left=bars, label='Jackpot')
+    xRange = np.arange(0,25000,1000).tolist()
+    ax[2].set_xticks(xRange, minor=True)
+    ax[2].grid(which='minor', alpha=0.8)
+    ax[2].grid(which='major', alpha=1)
+
+
+def plotFigure():
+    fig.set_figwidth(15)
     fig.set_figheight(7)
     fig.show()
 
 
-
 if __name__ == "__main__":
-    # Access class methods for oreNames, price history log
-    # todo: latest todo can be applied in this class
-    playDict = priceDict()
-    oreNames = playDict.oreNameList()
-    log = playDict.openLog()
-    xDateRange = appendDates(log)
+    Handler = PriceData()
+    Handler.populate()
+    fig, ax = plt.subplots(1, 3)
+    parseGraph()
+    plotTiersBar()
+    plotHistLines()
+    plotFigure()
+    printStats()
 
-    fig, ax = parseGraph(oreNames, log)
-    #ax[2].plot(np.arange(0,10,1), np.arange(5,15,1))
-    display(fig, ax)
 
 
 
