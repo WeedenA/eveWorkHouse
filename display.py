@@ -8,6 +8,7 @@ from PriceData import PriceData
 # todo: add into mining parse to only show what's present
 # todo: interactive "choose what ores" vs auto sense from mining parse (tie into parse, sep out, have true main)
 # todo: enumerate into barchart deltas, or tiered pricing (like from mining parse names)
+# test
 
 
 def printStats():
