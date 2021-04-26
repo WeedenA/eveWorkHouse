@@ -1,11 +1,2 @@
-Sperrylite	9,041	90,410 m3	733 m
-Sperrylite	3,573	35,730 m3	15 km
-Sperrylite	6,892	68,920 m3	34 km
-Sperrylite	14,544	145,440 m3	42 km
-Sperrylite	31,281	312,810 m3	57 km
-Sperrylite	3,148	31,480 m3	67 km
-Sperrylite	20,449	204,490 m3	80 km
-Sperrylite	10,138	101,380 m3	84 km
-Sperrylite	5,776	57,760 m3	94 km
-Sperrylite	7,787	77,870 m3	98 km
-Sperrylite	12,249	122,490 m3	147 km
+Thick Blue Ice	80	80,000 m3	4,903 m
+Thick Blue Ice	95	95,000 m3	6,275 m

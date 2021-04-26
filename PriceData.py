@@ -9,6 +9,7 @@ class PriceData(object):
     def __init__(self):
         self.log = gooPriceHistory().openLog()
         self.dates = []
+        self.uniqueDates = []
         self.prices = []
         self.oreNames = ORE_NAMES
         self.lastPrice = []
@@ -24,9 +25,20 @@ class PriceData(object):
 
     def setXDates(self):
         xDates = []
+        xUnique = []
         for entry in self.log:
-            xDates.append(entry['date'][5:])
+            thisDate = entry['date'][5:]
+            xDates.append(thisDate)
+            if len(xUnique) == 0:
+                xUnique.append(thisDate)
+            elif thisDate != xUnique[-1]:
+                xUnique.append(thisDate)
+            else:
+                continue
+
         self.dates = xDates
+        self.uniqueDates = xUnique
+
 
     def setPrices(self):
         priceList = []

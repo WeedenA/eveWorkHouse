@@ -85,8 +85,8 @@ ax.barh(oreNameList, oreVolumeList)
 labels = ax.get_xticklabels()
 plt.setp(labels, rotation=45, horizontalalignment='right')
 plt.xlabel('m3')
-plt.ylabel('ore variant')
-plt.title('Belt Ore Distribution')
+plt.ylabel('variant')
+plt.title('Belt Distribution')
 plt.grid(axis='x')
 
 # add values in-graph
