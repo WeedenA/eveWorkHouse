@@ -91,9 +91,10 @@ def plotFigure():
     fig.set_figheight(9)
     fig.show()
 
-
-
-if __name__ == "__main__":
+def run():
+    global Handler
+    global fig
+    global ax
     Handler = PriceData()
     Handler.populate()
     plt.style.use('default')
@@ -104,11 +105,15 @@ if __name__ == "__main__":
     plotFigure()
     printStats()
 
-
-
     style_list = ['default', 'classic'] + sorted(
         style for style in plt.style.available if style != 'classic')
     print(style_list)
+
+if __name__ == "__main__":
+    run()
+
+
+
 
 
 
