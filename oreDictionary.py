@@ -1,7 +1,5 @@
 '''
-Functional Dictionary to handle ore data top to bottom
-
-@author: Alex Weeden
+Handles dynamic record of objects found in belt parse.
 '''
 
 class oreDictionary(dict):
@@ -9,7 +7,7 @@ class oreDictionary(dict):
     def __init__(self):
         self = dict()
 
-    # todo: combine these two
+    # Creates new ore entry with initial volumes
     def addKey(self, key, value=0, isOutRange=False):
         self.setdefault(key, [])
         self[key].append(value)
@@ -19,17 +17,20 @@ class oreDictionary(dict):
             self[key].append(1)
         self['Total'] += value
 
+    # Adds volume to existing ore entries
     def incrementKey(self, key, value):
         self[key][0] += value
         self[key][1] += 1
         self['Total'] += value
 
+    # Total m3 of belt parse
     def total(self):
         return self['Total']
 
+    # Rounds maximum m3 for graphing purposes
+    # todo: re-verify
     def roundedMaxExcludeTotal(self):
         tempList = []
-        result = 0
         for key in self:
             if key == 'Total':
                 pass
@@ -38,6 +39,7 @@ class oreDictionary(dict):
         roundedMax = (200000 - (max(tempList) % 200000)) + max(tempList)
         return roundedMax
 
+    # Creates and returns list of every ore's total volume
     def volumeList(self):
         returnList = []
         for entry in self.values():

@@ -1,21 +1,15 @@
 '''
-Input: Reads in survey scanner output from miningParse.txt
-Action: Creates dictionary based on ore names
-
-Output: Dict or dataframe?? of ore: m3
-
-todo: distance from rock - immediately parseable
-todo: pricing - ready for you in gooPrice openLog
-todo: stop with todos until these are done :)
-
-@author: Alex Weeden
+Parses and sanitizes survey scanner paste to visually present the amount of ore remaining.
+Prints total and in-range amounts, number of asteroids to console.
+todo: main is too long. modularize.
 '''
 
-import numpy as np
 import matplotlib.pyplot as plt; plt.rcdefaults()
 from oreDictionary import oreDictionary as oreDict
+
 MAX_SCANNER_RANGE = 121
 MAX_MINING_RANGE = 24
+
 def cleanLines(line):
     line = line.split('\t')
     # check if rocks went empty, handle it
@@ -37,7 +31,7 @@ def cleanLines(line):
     return name, volume, distance
 
 # Pull in text file
-file = open('miningParse2.txt')
+file = open('miningParse.txt')
 lines = file.readlines()
 file.close()
 
@@ -71,7 +65,7 @@ print(f'Max Volume Rounded: {roundedMax}')
 oreNameList = list(dynamicOreNames.keys())
 oreVolumeList = dynamicOreNames.volumeList()
 print(f'Ore volumes: {oreVolumeList}')
-# set total to 0 for graphing
+# set total to 0 for graphing purposes, allows cleaner graph and can still label with actual total
 oreVolumeList[0] = 0
 print(f'Total m3: {total}')
 

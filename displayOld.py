@@ -1,15 +1,13 @@
+'''
+Previously used display of historical pricing.
+Single graph of historical pricing without current price tiers or in-graph labels
+todo: pull the trigger and delete (later)
+'''
 import matplotlib.pyplot as plt
 import numpy as np
 from gooPriceHistory import gooPriceHistory as priceDict
 from operator import itemgetter
-# todo: before using in any other files, indent into a function
-# todo: Also remember all these prices are straight from EvE values (API pls)
-# todo: List biggest deltas (daily, overall)
-# todo: main to run parse, price, etc all at once
-# todo: add time to granularize multi-day updates
-# todo: separate tiers of ore for better visualization(multi-axis or multi-plot? sentdex)
-# todo: delta vs yesterday, vs avg
-# todo: fix xticks date (time?)
+
 
 fig, ax = plt.subplots()
 title = 'B-Team Buyback Price Log'
@@ -22,7 +20,6 @@ print(log)
 xDateRange = []
 for entry in log:
     xDateRange.append(entry['date'][5:])
-# todo: clean this, add into mining parse to only show what's present
 dailyTally = []
 for ore in oreNames:
     orePrices = []

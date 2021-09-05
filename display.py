@@ -1,30 +1,31 @@
+'''
+Displays historical pricing across two graphs and a tiered current price chart.
+Prints complete price history, inter-day and overall deltas.
+todo: add into mining parse to only show what's present
+todo: display deltas in graph
+todo: Fix ore labels overlapping in-graph
+'''
+
 import matplotlib.pyplot as plt
 import numpy as np
-from gooPriceHistory import gooPriceHistory as priceDict
-from operator import itemgetter
-from random import randint
-from openOsFile import openApp
 from PriceData import PriceData
-# todo: add into mining parse to only show what's present
-# todo: interactive "choose what ores" vs auto sense from mining parse (tie into parse, sep out, have true main)
-# todo: display deltas in graph
-# todo: price tier legend (wonky graphing colors)
-# todo: PyQt tut
 
+# Displays ore name, total price log history, and inter/overall deltas to console
 def printStats():
     i = 0
     for ore in Handler.oreNames:
         print(f'Ore: \t\t{ore}\nPriceHist: {Handler.prices[i]}')
-        print(f'Intra Delta: \t{Handler.intraDelta[i]}')
+        print(f'Inter Delta: \t{Handler.intraDelta[i]}')
         print(f'Over Delta: \t{Handler.interDelta[i]}')
-
         i += 1
 
 
+# Plots graphs - Splits bottom 1/3 of ores into second graph to reduce overlap
+# Manual adjustment of label positions for some ores to reduce overlap
+# todo: fix randomization, remove iterative
 def parseGraph():
     graphSplitter = 0
     subGraphCol = 0
-    subGraphRow = 0
     i = 0
     for ore in Handler.oreNames:
         if graphSplitter == 8:
@@ -32,7 +33,6 @@ def parseGraph():
         ax[subGraphCol].plot(Handler.dates, Handler.prices[i])
         ax[subGraphCol].set_yticks(np.arange(2000, 15000, 1000))
         if subGraphCol == 1 and i % 2 == 0:
-            rand = randint(1,3)
             ax[subGraphCol].text(Handler.dates[-3], Handler.prices[i][-1]+150, ore, rotation=0, va='bottom')
         elif subGraphCol == 0  and i == 2:
             ax[subGraphCol].text(Handler.dates[-3], Handler.prices[i][-1]+150, ore, rotation=0, va='bottom')
@@ -42,11 +42,8 @@ def parseGraph():
         i += 1
     return fig, ax
 
-
-def plotHistLines():
-    pass
-
-
+# Plots 3-tiered bar chart for last known price values
+# Places text of tiered values in-graph
 def plotTiersBar():
     bars = np.add(Handler.lastPrice,Handler.lastPriceT2).tolist()
     ax[2].barh(Handler.oreNames, Handler.lastPrice, label='Base')
@@ -68,7 +65,8 @@ def plotTiersBar():
     ax[2].grid(which='major', alpha=1)
     ax[2].set_title('Current Price Tiers')
 
-
+# Graph axes (title, labels, legend) setup
+# todo: clean complete graph setup with run()
 def plotFigure():
     title = 'Goo Pricing'
     fig.suptitle(title)
@@ -91,10 +89,11 @@ def plotFigure():
     fig.set_figheight(9)
     fig.show()
 
+# Pulls price handler from PriceData.py
+# Overall graph setup todo: clean
+# Runs graph parse and plot
 def run():
-    global Handler
-    global fig
-    global ax
+    global Handler, fig, ax
     Handler = PriceData()
     Handler.populate()
     plt.style.use('default')

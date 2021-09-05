@@ -1,2 +1,0 @@
-Thick Blue Ice	80	80,000 m3	4,903 m
-Thick Blue Ice	95	95,000 m3	6,275 m

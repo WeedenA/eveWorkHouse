@@ -1,23 +1,26 @@
+'''
+Parses pasted new price data, retrieves saved historical data and saves new dict.
+todo: Modularize
+'''
 from gooPriceHistory import gooPriceHistory as priceDict
 import pickle
 
 PRICE_LOG = 'PRICE_LOG.txt'
-#Load pickled list of historical data dictionaries
 
 
 def run():
-    # Open price copy/paste
+    # Open pasted prices
     file = open('pennys.txt')
     lines = file.readlines()
     file.close()
 
-    # Initiate, fill from scanned file
+    # Pull historical pricing
     todaysDict = priceDict()
     log = todaysDict.openLog()
     todaysDict.populate()
     mapping = list(map(str.strip, lines))
 
-    # Clean values, assign prices
+    # Clean new values, populate into price dict
     i = 0
     for item in mapping:
         if item in todaysDict:
@@ -30,14 +33,14 @@ def run():
             todaysDict[item] = value
         i += 1
 
-    # Make it pretty
+    # todo: bring this in-class
     todaysDict.graph()
 
     # If the last entry was today, don't make another
     # Else append today's dict, pickle to file (overwrite)
     if log[-1]['date'] == todaysDict['date']:
-        print("already ran it today dumbass")
-        print(f"here's your dict: {todaysDict}")
+        print("Already ran today")
+        print(f"Here's your new dict anyways: {todaysDict}")
     else:
         log.append(todaysDict)
         with open(PRICE_LOG, 'wb') as f:

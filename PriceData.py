@@ -1,3 +1,6 @@
+'''
+Data processing on historical prices
+'''
 from gooPriceHistory import gooPriceHistory
 
 ORE_NAMES = ['Loparite', 'Monazite', 'Xenotime', 'Ytterbite',
@@ -23,23 +26,25 @@ class PriceData(object):
     def addParse(self):
         pass
 
+    # Handles date processing for multiple single-day entries
+    # todo: what were you thinking? you can do better than this
     def setXDates(self):
         xDates = []
         xUnique = []
         for entry in self.log:
             thisDate = entry['date'][5:]
             xDates.append(thisDate)
+            # find a better workaround for empty entries
             if len(xUnique) == 0:
                 xUnique.append(thisDate)
             elif thisDate != xUnique[-1]:
                 xUnique.append(thisDate)
             else:
                 continue
-
         self.dates = xDates
         self.uniqueDates = xUnique
 
-
+    # Parses price data from historical log
     def setPrices(self):
         priceList = []
         for ore in self.oreNames:
@@ -49,7 +54,7 @@ class PriceData(object):
             priceList.append(orePrice)
         self.prices = priceList
 
-
+    # Set most current prices and tiers
     def setLastPrices(self):
         daily, daily2, daily3 = [],[],[]
         for ore in self.oreNames:
@@ -62,6 +67,7 @@ class PriceData(object):
         self.lastPriceT2 = daily2
         self.lastPriceT3 = daily3
 
+    # Set day-to-day and overall historical change in price for each ore
     def setDeltas(self):
         intraDeltas = []
         interDeltas = []
@@ -73,7 +79,8 @@ class PriceData(object):
         self.intraDelta = intraDeltas
         self.interDelta = interDeltas
 
-
+    # Runs the above methods to populate a working historical log.
+    # todo: what's a cleaner way to do this?
     def populate(self):
         self.setXDates()
         self.setPrices()
