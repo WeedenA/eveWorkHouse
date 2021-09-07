@@ -1,51 +1,57 @@
 '''
-Parses pasted new price data, retrieves saved historical data and saves new dict.
-todo: Modularize
+Parses pasted new price data, retrieves saved historical data and saves new log.
 '''
-from gooPriceHistory import gooPriceHistory as priceDict
+from PriceData import PriceData
 import pickle
 
 PRICE_LOG = 'PRICE_LOG.txt'
 
 
-def run():
-    # Open pasted prices
+# Open pasted prices
+def newPrices():
     file = open('pennys.txt')
-    lines = file.readlines()
+    price_lines = file.readlines()
     file.close()
+    mapping = list(map(str.strip, price_lines))
+    return price_lines, mapping
 
-    # Pull historical pricing
-    todaysDict = priceDict()
-    log = todaysDict.openLog()
-    todaysDict.populate()
-    mapping = list(map(str.strip, lines))
 
-    # Clean new values, populate into price dict
+# Clean new values, populate into price dict
+def cleanse(today, map):
     i = 0
-    for item in mapping:
-        if item in todaysDict:
-            value = mapping[i + 1][32:38]
+    for item in map:
+        if item in today:
+            value = map[i + 1][32:38]
             value = value.replace('K', '00')
             value = value.replace(',', '')
             value = value.replace('.', '')
             value = int(value.strip())
 
-            todaysDict[item] = value
+            today[item] = value
         i += 1
+        return today
 
-    # todo: bring this in-class
-    todaysDict.graph()
 
-    # If the last entry was today, don't make another
-    # Else append today's dict, pickle to file (overwrite)
-    if log[-1]['date'] == todaysDict['date']:
+# If the last entry was today, don't make another
+# Else append today's dict, pickle to file (overwrite, todo: switch to db)
+def pickler(handle, today):
+    if handle.log[-1]['date'] == today['date']:
         print("Already ran today")
-        print(f"Here's your new dict anyways: {todaysDict}")
+        print(f"Here's your new dict anyways: {today}")
     else:
-        log.append(todaysDict)
+        handle.log.append(today)
         with open(PRICE_LOG, 'wb') as f:
-            pickle.dump(log, f)
+            pickle.dump(handle.log, f)
         f.close()
+        print("New log entry recorded")
+
+
+def run():
+    lines, mapping = newPrices()
+    handler = PriceData()
+    todays_dict = cleanse(handler.dict, mapping)
+    pickler(handler, todays_dict)
+
 
 if __name__ == '__main__':
     run()

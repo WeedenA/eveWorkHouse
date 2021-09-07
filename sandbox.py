@@ -1,11 +1,17 @@
 '''
 Playground, random stuff
 '''
-import PyPDF2
+import pickle
 
-pdf = open('CHK_4758_Monthly_Statement_02012021-02282021.pdf', 'rb')
-reader = PyPDF2.PdfFileReader(pdf)
-print(reader.numPages)
+PRICE_LOG = 'PRICE_LOG.txt'
+with open(PRICE_LOG, 'rb') as f:
+    log = pickle.load(f)
+f.close()
+print(len(log))
 
-page = reader.getPage(0)
-print(page.extractText())
+log = log[:-1]
+
+print(len(log))
+with open(PRICE_LOG, 'wb') as f:
+    pickle.dump(log, f)
+f.close()

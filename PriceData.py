@@ -1,16 +1,20 @@
 '''
 Data processing on historical prices
 '''
-from gooPriceHistory import gooPriceHistory
+from datetime import date
+import pickle
 
 ORE_NAMES = ['Loparite', 'Monazite', 'Xenotime', 'Ytterbite',
              'Carnotite', 'Cinnabar', 'Pollucite', 'Zircon',
              'Chromite', 'Otavite', 'Sperrylite', 'Vanadinite']
+PRICE_LOG = 'PRICE_LOG.txt'
 
 class PriceData(object):
 
     def __init__(self):
-        self.log = gooPriceHistory().openLog()
+        # rename
+        self.dict = dict()
+        self.log = self.openLog()
         self.dates = []
         self.uniqueDates = []
         self.prices = []
@@ -20,11 +24,22 @@ class PriceData(object):
         self.lastPriceT3 = []
         self.intraDelta = []
         self.interDelta = []
+        self.populate()
+        self.populateDict()
+
+    # Initializes new daily dict with ore names
+    def populateDict(self):
+        self.dict['date'] = str(date.today())
+        for name in ORE_NAMES:
+            self.dict[name] = 0
 
 
-    #migrate mining parse
-    def addParse(self):
-        pass
+    def openLog(self):
+        with open(PRICE_LOG, 'rb') as f:
+            log = pickle.load(f)
+        f.close()
+
+        return(log)
 
     # Handles date processing for multiple single-day entries
     # todo: what were you thinking? you can do better than this
@@ -34,7 +49,7 @@ class PriceData(object):
         for entry in self.log:
             thisDate = entry['date'][5:]
             xDates.append(thisDate)
-            # find a better workaround for empty entries
+            # todo: find a better workaround for empty entries
             if len(xUnique) == 0:
                 xUnique.append(thisDate)
             elif thisDate != xUnique[-1]:
