@@ -4,6 +4,7 @@ Prints complete price history, inter-day and overall deltas.
 todo: add into mining parse to only show what's present
 todo: display deltas in graph
 todo: Fix ore labels overlapping in-graph
+testing branch
 '''
 
 import matplotlib.pyplot as plt
