@@ -1,13 +1,17 @@
 '''
 Data processing on historical prices
+
+todo: purge pickle with display
 '''
 from datetime import date
 import pickle
+import sql_server
+import pandas as pd
 
 ORE_NAMES = ['Loparite', 'Monazite', 'Xenotime', 'Ytterbite',
              'Carnotite', 'Cinnabar', 'Pollucite', 'Zircon',
              'Chromite', 'Otavite', 'Sperrylite', 'Vanadinite']
-PRICE_LOG = 'PRICE_LOG.txt'
+PRICE_LOG = 'zPRICE_LOG.txt'
 
 class PriceData(object):
 
@@ -15,6 +19,7 @@ class PriceData(object):
         # rename
         self.dict = dict()
         self.log = self.openLog()
+        self.df = self.openRecord()
         self.dates = []
         self.uniqueDates = []
         self.prices = []
@@ -24,7 +29,6 @@ class PriceData(object):
         self.lastPriceT3 = []
         self.intraDelta = []
         self.interDelta = []
-        self.populate()
         self.populateDict()
 
     # Initializes new daily dict with ore names
@@ -35,11 +39,18 @@ class PriceData(object):
 
 
     def openLog(self):
-        with open(PRICE_LOG, 'rb') as f:
-            log = pickle.load(f)
-        f.close()
+        # with open(PRICE_LOG, 'rb') as f:
+        #     log = pickle.load(f)
+        # f.close()
+        # return(log)
+        pass
 
-        return(log)
+    def openRecord(self):
+        engine = sql_server.create_sqlalch_engine()
+        table = 'ore_price_record'
+        df = pd.read_sql(table, engine)
+        return df
+
 
     # Handles date processing for multiple single-day entries
     # todo: what were you thinking? you can do better than this

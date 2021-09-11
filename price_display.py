@@ -1,15 +1,16 @@
 '''
 Displays historical pricing across two graphs and a tiered current price chart.
 Prints complete price history, inter-day and overall deltas.
-todo: add into mining parse to only show what's present
-todo: display deltas in graph
-todo: Fix ore labels overlapping in-graph
-testing branch
+
+todo: purge pickle
+stretch: integrate into mining parse to only show what's present
+stretch: display deltas in graph
+stretch: Fix ore labels overlapping in-graph
 '''
 
 import matplotlib.pyplot as plt
 import numpy as np
-from PriceData import PriceData
+from price_handler import PriceData
 
 # Displays ore name, total price log history, and inter/overall deltas to console
 def printStats():
@@ -86,12 +87,13 @@ def plotFigure():
     fig.set_figheight(9)
     fig.show()
 
-# Pulls price handler from PriceData.py
+# Pulls price handler from price_handler.py
 # Overall graph setup todo: clean
 # Runs graph parse and plot
 def run():
     global Handler, fig, ax
     Handler = PriceData()
+    Handler.populate()
     plt.style.use('default')
     fig, ax = plt.subplots(1, 3)
     parseGraph()

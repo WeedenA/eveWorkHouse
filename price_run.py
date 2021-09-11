@@ -1,7 +1,7 @@
 '''
 To be ran after pasting new daily prices. Will update price log and display graph.
 '''
-import pennysOrePrice, display
+import price_parse, price_display
 
-pennysOrePrice.run()
-display.run()
+price_parse.run()
+price_display.run()
