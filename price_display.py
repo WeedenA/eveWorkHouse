@@ -1,109 +1,90 @@
 '''
-Displays historical pricing across two graphs and a tiered current price chart.
-Prints complete price history, inter-day and overall deltas.
+Displays historical pricing across two graphs and a tiered chart of current prices.
+Prints complete price history
 
-todo: purge pickle
 stretch: integrate into mining parse to only show what's present
 stretch: display deltas in graph
-stretch: Fix ore labels overlapping in-graph
+stretch: Append ore labels in-graph (no overlap)
 '''
 
 import matplotlib.pyplot as plt
 import numpy as np
 from price_handler import PriceData
 
-# Displays ore name, total price log history, and inter/overall deltas to console
-def printStats():
-    i = 0
-    for ore in Handler.oreNames:
-        print(f'Ore: \t\t{ore}\nPriceHist: {Handler.prices[i]}')
-        print(f'Inter Delta: \t{Handler.intraDelta[i]}')
-        print(f'Over Delta: \t{Handler.interDelta[i]}')
-        i += 1
+# Displays ore name, total price log history
+# place delta calcs here
+def print_stats(hand):
+    for ore in hand.oreNames:
+        print(f'Ore: \t\t{ore}\nPriceHist: {hand.df[ore].tolist()}')
 
 
 # Plots graphs - Splits bottom 1/3 of ores into second graph to reduce overlap
-# todo: fix randomization, remove iterative
-def parseGraph():
+def plot_hist_prices(hand, ax):
     graphSplitter = 0
     subGraphCol = 0
-    for i in range(len(Handler.oreNames)):
+    for i in range(len(hand.oreNames)):
         if graphSplitter == 8:
             subGraphCol = 1
-        ax[subGraphCol].plot(Handler.dates, Handler.prices[i])
+        ax[subGraphCol].plot(hand.df['date'], hand.df[hand.oreNames[i]])
         ax[subGraphCol].set_yticks(np.arange(2000, 15000, 1000))
-        # In-graph labelling (too much overlap)
-        # if subGraphCol == 1 and i % 2 == 0:
-        #     ax[subGraphCol].text(Handler.dates[-1], Handler.prices[i][-1]+150, ore, rotation=0, va='bottom')
-        # else:
-        #     ax[subGraphCol].text(Handler.dates[-1], Handler.prices[i][-1], ore, rotation=0, va='bottom')
         graphSplitter += 1
-    return fig, ax
+    return ax
+
 
 # Plots 3-tiered bar chart for last known price values
-# Places text of tiered values in-graph
-def plotTiersBar():
-    bars = np.add(Handler.lastPrice,Handler.lastPriceT2).tolist()
-    ax[2].barh(Handler.oreNames, Handler.lastPrice, label='Base')
-    ax[2].barh(Handler.oreNames, Handler.lastPriceT2, left=Handler.lastPrice, label='T2')
-    ax[2].barh(Handler.oreNames, Handler.lastPriceT3, left=bars, label='Jackpot')
-    ax[2].legend()
-    i = 0
-    for ore in Handler.oreNames:
-        last = int(Handler.lastPrice[i])
-        last2 = int(Handler.lastPriceT2[i] + last)
-        last3 = int(Handler.lastPriceT3[i] * 2)
-        ax[2].text(0, ore, last, va='top')
-        ax[2].text(last, ore, last2, va='center')
-        ax[2].text(last3, ore, last3, va='bottom')
-        i += 1
-    xRange = np.arange(0,25000,1000).tolist()
-    ax[2].set_xticks(xRange, minor=True)
-    ax[2].grid(which='minor', alpha=0.4)
-    ax[2].grid(which='major', alpha=1)
-    ax[2].set_title('Current Price Tiers')
+def plot_tiered_axis(hand, ax):
+    latest_record = hand.latest_record
+    tier_price = [latest_record, latest_record * 1.15 - latest_record, latest_record * 1.15,
+                  latest_record * 2 - latest_record * 1.15, latest_record * 2]
 
-# Graph axes (title, labels, legend) setup
-# todo: clean complete graph setup with run()
-def plotFigure():
+    ax[2].barh(hand.oreNames, tier_price[0], label='Base')
+    ax[2].barh(hand.oreNames, tier_price[1], left=tier_price[0], label='T2')
+    ax[2].barh(hand.oreNames, tier_price[3], left=tier_price[2], label='Jackpot')
+    ax[2].legend()
+
+    # Place value in-graph
+    for ore in hand.oreNames:
+        ax[2].text(0, ore, tier_price[0][ore], va='top')
+        ax[2].text(int(tier_price[2][ore]), ore, int(tier_price[2][ore]), va='center')
+        ax[2].text(tier_price[4][ore], ore, tier_price[4][ore], va='bottom')
+
+    return ax
+
+
+# Graph axes titles, labels, legends
+def plot_figure(hand, fig, ax):
     title = 'Goo Pricing'
     fig.suptitle(title)
-    ax1 = ax[0]
-    ax2 = ax[1]
-    axList = [ax1, ax2]
-    for axis in axList:
-        axis.grid(which='major', alpha=0.8)
 
-    ax1.set_title("R64/32")
-    ax2.set_title("R16")
+    ax[0].set_title("R64/32")
+    ax[1].set_title("R16")
+    ax[2].set_title('Current Price Tiers')
 
-    ax1.set_xticklabels(Handler.uniqueDates, rotation=90)
-    ax2.set_xticklabels(Handler.uniqueDates, rotation=90)
+    ax[0].legend(hand.oreNames[:8], loc='upper center')
+    ax[1].legend(hand.oreNames[8:12], loc='upper center')
 
-    ax1.legend(Handler.oreNames[:8], loc='lower left')
-    ax2.legend(Handler.oreNames[8:12], loc='lower left')
+    ax[0].set_xticks(hand.df['date'], minor=True)
+    ax[1].set_xticks(hand.df['date'], minor=True)
+    tiered_x_range = np.arange(0, 28000, 1000).tolist()
+    ax[2].set_xticks(tiered_x_range, minor=True)
 
-    fig.set_figwidth(18)
-    fig.set_figheight(9)
+    for axis in ax:
+        axis.grid(which='major', alpha=1)
+        axis.grid(which='minor', alpha=0.4)
+
+    fig.set_figwidth(20)
+    fig.set_figheight(10)
     fig.show()
 
-# Pulls price handler from price_handler.py
-# Overall graph setup todo: clean
-# Runs graph parse and plot
-def run():
-    global Handler, fig, ax
-    Handler = PriceData()
-    Handler.populate()
-    plt.style.use('default')
-    fig, ax = plt.subplots(1, 3)
-    parseGraph()
-    plotTiersBar()
-    plotFigure()
-    printStats()
 
-    style_list = ['default', 'classic'] + sorted(
-        style for style in plt.style.available if style != 'classic')
-    print(style_list)
+def run():
+
+    fig, ax = plt.subplots(1, 3)
+    handle = PriceData()
+    ax = plot_hist_prices(handle, ax)
+    ax = plot_tiered_axis(handle, ax)
+    plot_figure(handle, fig, ax)
+    print_stats(handle)
 
 if __name__ == "__main__":
     run()

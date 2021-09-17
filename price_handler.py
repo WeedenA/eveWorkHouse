@@ -20,6 +20,7 @@ class PriceData(object):
         self.dict = dict()
         self.log = self.openLog()
         self.df = self.openRecord()
+        self.latest_record = self.df.drop('date', axis=1).iloc[-1]
         self.dates = []
         self.uniqueDates = []
         self.prices = []
