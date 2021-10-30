@@ -3,11 +3,12 @@ Displays historical pricing across two graphs and a tiered chart of current pric
 Prints complete price history
 
 stretch: integrate into mining parse to only show what's present
-stretch: display deltas in graph
+stretch: switch to monthly bucket xticks
 stretch: Append ore labels in-graph (no overlap)
 '''
 
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 import numpy as np
 from price_handler import PriceData
 
@@ -56,15 +57,21 @@ def plot_figure(hand, fig, ax):
     title = 'Goo Pricing'
     fig.suptitle(title)
 
+
     ax[0].set_title("R64/32")
     ax[1].set_title("R16")
     ax[2].set_title('Current Price Tiers')
 
-    ax[0].legend(hand.oreNames[:8], loc='upper center')
+    ax[0].legend(hand.oreNames[:8], loc='upper center', ncol=2)
     ax[1].legend(hand.oreNames[8:12], loc='upper center')
 
-    ax[0].set_xticks(hand.df['date'], minor=True)
-    ax[1].set_xticks(hand.df['date'], minor=True)
+    # data formatter, to be changed to monthly buckets
+    for x in range(2):
+        xfmt = mdates.DateFormatter('%Y-%m-%d')
+        ax[x].xaxis.set_major_formatter(xfmt)
+        ax[x].set_xticks(hand.df['date'])
+        ax[x].set_xticklabels(hand.df['date'].dt.strftime('%m-%d'), rotation=90)
+
     tiered_x_range = np.arange(0, 28000, 1000).tolist()
     ax[2].set_xticks(tiered_x_range, minor=True)
 
@@ -74,7 +81,8 @@ def plot_figure(hand, fig, ax):
 
     fig.set_figwidth(20)
     fig.set_figheight(10)
-    fig.show()
+
+
 
 
 def run():
@@ -85,6 +93,7 @@ def run():
     ax = plot_tiered_axis(handle, ax)
     plot_figure(handle, fig, ax)
     print_stats(handle)
+    plt.show()
 
 if __name__ == "__main__":
     run()

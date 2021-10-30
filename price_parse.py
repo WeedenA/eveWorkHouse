@@ -1,38 +1,31 @@
 '''
 Parses pasted new price data and saves new log entry.
-todo: clean-up, pickle has been scrubbed
 '''
 from price_handler import PriceData
 import pandas as pd
+import requests
+import re
+from bs4 import BeautifulSoup
 from sql_server import create_sqlalch_engine, execute_alch_query
 
-PRICE_LOG = 'zPRICE_LOG.txt'
 
 
-# Open pasted prices
-def newPrices():
-    file = open('zpaste_ore_prices.txt')
-    price_lines = file.readlines()
-    file.close()
-    mapping = list(map(str.strip, price_lines))
-    return mapping
+def scrape(record):
+    url = "https://pgsus.space/buyback/bteam-buyback/"
+    html_data = requests.get(url).text
+    soup = BeautifulSoup(html_data, 'html.parser')
+    soup.prettify()
 
-
-# Clean new values, populate into price dict
-def cleanse(today, map):
-    i = 0
-    for item in map:
-        if item in today:
-            value = map[i + 1][32:38]
-            value = value.replace('K', '00')
-            value = value.replace(',', '')
-            value = value.replace('.', '')
-            value = int(value.strip())
-
-            today[item] = value
-        i += 1
-
-    return today
+    tables = soup.find_all('table')
+    for x in range(3):
+        rows = tables[x].find_all('tr')
+        for row in rows:
+            row = row.get_text().split()
+            if row[2] == 'of':
+                ore_name = row[0]
+                row[8] = re.sub('[,.]', '', row[8])
+                ore_price = int(re.sub('[K]', '00', row[8]))
+                record[ore_name] = ore_price
 
 
 # If the last entry was today, don't make another
@@ -52,11 +45,9 @@ def insert_new_price_record(df, today):
 
 
 def run():
-
-    mapping = newPrices()
     handler = PriceData()
-    todays_dict = cleanse(handler.dict, mapping)
-    insert_new_price_record(handler.df, todays_dict)
+    scrape(handler.dict)
+    insert_new_price_record(handler.df, handler.dict)
 
 
 

@@ -89,6 +89,9 @@ for i, v in enumerate(oreVolumeList):
         ax.text(v, i, str(total), fontweight='bold')
     else:
         ax.text(v, i, str(int(v)), fontweight='bold')
+
+fig.set_figwidth(11)
+fig.set_figheight(7)
 plt.show()
 
 

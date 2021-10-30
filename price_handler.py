@@ -1,7 +1,5 @@
 '''
 Data processing on historical prices
-
-todo: purge pickle with display
 '''
 from datetime import date
 import pickle
@@ -18,7 +16,6 @@ class PriceData(object):
     def __init__(self):
         # rename
         self.dict = dict()
-        self.log = self.openLog()
         self.df = self.openRecord()
         self.latest_record = self.df.drop('date', axis=1).iloc[-1]
         self.dates = []
@@ -38,13 +35,6 @@ class PriceData(object):
         for name in ORE_NAMES:
             self.dict[name] = 0
 
-
-    def openLog(self):
-        # with open(PRICE_LOG, 'rb') as f:
-        #     log = pickle.load(f)
-        # f.close()
-        # return(log)
-        pass
 
     def openRecord(self):
         engine = sql_server.create_sqlalch_engine()
