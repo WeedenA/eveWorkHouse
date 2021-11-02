@@ -1,6 +1,5 @@
 '''
 Basic SQL server operators using mysql-connector and sqlalchemy
-todo: scrub personal before upload
 '''
 
 from sqlalchemy import create_engine
@@ -23,7 +22,7 @@ def create_sqlalch_engine(host_name=HOST, user_name=USER, user_password=PASS, db
 
 def execute_alch_query(engine, query):
     try:
-        res = engine.execute(query).fetchall()
+        res = engine.execute(query)
         print("Query successful")
     except SQLAlchemyError as err:
         print(f"Error: '{err}'")
