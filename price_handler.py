@@ -9,7 +9,6 @@ import pandas as pd
 ORE_NAMES = ['Loparite', 'Monazite', 'Xenotime', 'Ytterbite',
              'Carnotite', 'Cinnabar', 'Pollucite', 'Zircon',
              'Chromite', 'Otavite', 'Sperrylite', 'Vanadinite']
-PRICE_LOG = 'zPRICE_LOG.txt'
 
 class PriceData(object):
 
