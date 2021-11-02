@@ -6,8 +6,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError
 
 HOST = '192.168.1.2'
-USER = 'root'
-PASS = 'G3nerationIO'
+USER = ''
+PASS = ''
 DB = 'eve'
 
 
